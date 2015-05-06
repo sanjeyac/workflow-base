@@ -1,0 +1,7 @@
+<input ng-model="vm.current" />
+<button type="button" ng-click="vm.add(vm.current)">add</button>
+<ul>
+    <li ng-repeat="e in vm.items track by $index">
+        <span ng-bind="e"></span>
+    </li>
+</ul>
