@@ -24,3 +24,9 @@ This workflow is divided in 3 phases: Setup, Development and Deploy
 * Minify all these files 
 * Uglify all these files
 * Revisioning files
+
+### TODO
+
+Jasmine/Karma/Angular/Gulp setup completed
+
+Need to organize and write down all Gulp tasks
