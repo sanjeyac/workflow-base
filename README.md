@@ -1,6 +1,6 @@
 # workflow-base
 
-This is an experimantal project to create a workflow for developing angular based frontend with 
+This is an experimental project to create a workflow for developing angular based frontend with 
 Behaviour Driven Development and API Driven Development.
 Angular parts are based on "John Papa's angular style guide".
 
