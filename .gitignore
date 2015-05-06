@@ -3,3 +3,6 @@ node_modules
 
 #bower
 src/bower_components
+
+#dist
+dist
