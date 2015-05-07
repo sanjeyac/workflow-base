@@ -3,7 +3,7 @@
 
     angular
         .module('GulpWorkflow')
-        .config(configuration)
+        .config(configuration);
 
     configuration.$inject = ['$routeProvider'];
 

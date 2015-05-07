@@ -1,3 +1,7 @@
+/**
+ *  author: S.Cooray <sanjeya.cooray@gmail.com>
+ */
+
 var gulp            = require('gulp'),
     plumber         = require('gulp-plumber'),
     rename          = require('gulp-rename'),
@@ -14,16 +18,25 @@ var gulp            = require('gulp'),
     karma           = require('gulp-karma'),
     browserSync     = require('browser-sync');
 
-gulp.task('browser-sync', function() {
-  browserSync({
-    server: {
-       baseDir: "./src"
-    }
-  });
+
+gulp.task('browser-sync', function () {
+    browserSync({
+        server: {
+            baseDir: "./src"
+        }
+    });
 });
 
+
 gulp.task('bs-reload', function () {
-  pluginsbrowserSync.reload();
+    pluginsbrowserSync.reload();
+});
+
+gulp.task('bower-install', function () {
+    return bower({
+            directory: './bower_components'
+        })
+        .pipe(gulp.dest('lib/'))
 });
 
 gulp.task('test', function () {
@@ -39,46 +52,111 @@ gulp.task('test', function () {
         });
 });
 
+
 gulp.task('autotest', function () {
     return gulp.watch(['src/scripts/**/*.js'], ['test']);
 });
 
-gulp.task('images', function(){
-  gulp.src('src/images/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('dist/images/'));
+
+gulp.task('images', function () {
+    gulp.src('src/images/**/*')
+        .pipe(cache(imagemin({
+            optimizationLevel: 3,
+            progressive: true,
+            interlaced: true
+        })))
+        .pipe(gulp.dest('dist/images/'));
 });
 
-gulp.task('styles', function(){
-  gulp.src(['src/styles/**/*.scss'])
-    .pipe(plumber({
-      errorHandler: function (error) {
-        console.log(error.message);
-        this.emit('end');
-    }}))
-    .pipe(sass())
-    .pipe(autoprefixer('last 2 versions'))
-    .pipe(gulp.dest('dist/styles/'))
-    .pipe(browserSync.reload({stream:true}))
+gulp.task('src-inject', function () {
+    var target = gulp.src('src/index.html');
+    var sources = gulp.src(['src/**/*.js', 
+                            'src/**/*.css',
+                            '!src/bower_components',], {
+        read: false
+    });
+    return target.pipe(inject(sources))
+        .pipe(gulp.dest('./src'));
 });
 
-gulp.task('scripts', function(){
-  return gulp.src('src/scripts/**/*.js')
-    .pipe(plumber({
-      errorHandler: function (error) {
-        console.log(error.message);
-        this.emit('end');
-    }}))
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('dist/scripts/'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts/'))
-    .pipe(browserSync.reload({stream:true}))
+
+/**
+ *  Generate final Javascript files
+ */
+gulp.task('deploy-js', function () {
+    return gulp.src('src/scripts/**/*.js')
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }
+        }))
+        .pipe(concat('main.js'))
+        .pipe(uglify())
+        .pipe(rev())
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(gulp.dest('dist/scripts/'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));    
 });
 
-gulp.task('default', ['browser-sync'], function(){
-  gulp.watch("src/styles/**/*.scss", ['styles']);
-  gulp.watch("src/scripts/**/*.js", ['scripts']);
-  gulp.watch("*.html", ['bs-reload']);
+/**
+ *  Generate final CSS files
+ */
+gulp.task('deploy-css', function () {
+    return gulp.src(['src/styles/**/*.css'])
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }
+        }))
+        .pipe(concat('style.css'))
+        .pipe(gulp.dest('dist/styles/'))
+        .pipe(browserSync.reload({
+            stream: true
+        })); 
+});
+
+/**
+ *  Generate final HTML files
+ */
+gulp.task('deploy-html', function () {
+    return gulp.src(['src/**/*.html'])
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }
+        }))
+        .pipe(gulp.dest('dist/'))
+        .pipe(browserSync.reload({
+            stream: true
+        })); 
+});
+
+/**
+ *  Include js/css files in the html files
+ */
+gulp.task('deploy-inject', function () {
+    var target = gulp.src('dist/*.html');
+    var sources = gulp.src(['dist/**/*.js', 
+                            'dist/**/*.css'], {
+        read: false
+    });
+    return target.pipe(inject(sources))
+        .pipe(gulp.dest('./dist'));
+});
+
+
+gulp.task('deploy', [ 'deploy-css', 'deploy-html', 'deploy-js', 'deploy-inject' ]);
+
+
+gulp.task('default', ['browser-sync'], function () {
+    gulp.watch("src/styles/**/*.css", ['styles']);
+    gulp.watch("src/scripts/**/*.js", ['scripts']);
+    gulp.watch("*.html", ['bs-reload']);
 });
