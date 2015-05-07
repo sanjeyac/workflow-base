@@ -4,6 +4,7 @@ node_modules
 #bower
 src/bower_components
 bower_components
+lib
 
 #dist
 dist

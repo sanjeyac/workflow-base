@@ -36,7 +36,7 @@ gulp.task('bower-install', function () {
     return bower({
             directory: './bower_components'
         })
-        .pipe(gulp.dest('lib/'))
+        .pipe(gulp.dest('dist/lib/'))
 });
 
 gulp.task('test', function () {
