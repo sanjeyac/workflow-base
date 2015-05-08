@@ -16,14 +16,18 @@ Here are the workflow's steps.
 ```gulp dev```
 * Run tests while developing
 ```gulp test```
-* Run autmatically for each code change
-```gulp autotest```
 * Deploy app with concatenation and minification of all js and css files.
+```gulp deploy```
+
 
 Note:
 While developing your source files will be injected directly to html
 so if you have a error in your scripts, you'll get directly at the point,
 no absurd compilation/concatenation/minify/uglify problems while developing! ( too frustrating... )
+
+Note2:
+Test can be run continously with
+```gulp autotest```
 
 ## Setup
 
@@ -45,7 +49,5 @@ no absurd compilation/concatenation/minify/uglify problems while developing! ( t
 * Revisioning files
 
 ### TODO
-
-Jasmine/Karma/Angular/Gulp setup completed
-
-Need to organize and write down all Gulp tasks
+Need to refactor all Gulp tasks
+Corrects deploy css/js paths
