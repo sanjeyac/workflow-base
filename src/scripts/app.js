@@ -6,5 +6,6 @@
             'ngRoute'
         ]);
 
+    console.log("pandemone");
     
 })();

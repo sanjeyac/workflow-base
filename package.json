@@ -31,6 +31,7 @@
     "karma-jasmine": "0.3.5",
     "karma-phantomjs-launcher": "0.1.4",
     "karma-spec-reporter": "0.0.19",
+    "stream-series": "^0.1.1",
     "wiredep": "^2.2.2"
   }
 }

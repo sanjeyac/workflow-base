@@ -1,25 +1,18 @@
 <html ng-app="GulpWorkflow">
     <head>
-        
-        <!-- bower:css -->
-        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-        <!-- endbower --> 
-        
         <!-- inject:css -->
+        <link rel="stylesheet" href="lib/styles/vendor-b9ab1d05.css">
         <!-- endinject -->
+
+        <!-- inject:js -->
+        <script src="lib/js/vendor-1dc58ed1.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/list/list.config.js"></script>
+        <script src="scripts/list/list.controller.js"></script>
+        <!-- endinject -->          
     </head>
     <body>
-        <div ng-view="">    
-        </div>
-        <!-- bower:js -->
-        <script src="../bower_components/jquery/jquery.js"></script>
-        <script src="../bower_components/angular/angular.js"></script>
-        <script src="../bower_components/angular-route/angular-route.js"></script>
-        <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="../bower_components/lodash/lodash.js"></script>
-        <!-- endbower --> 
-                
-        <!-- inject:js -->
-        <!-- endinject -->  
+        <div ng-view=""></div>
+        
     </body>
 </html>

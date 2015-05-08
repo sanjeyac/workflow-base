@@ -1,14 +1,33 @@
 # workflow-base
 
-This is an experimental project to create a workflow for developing angular based frontend with 
+This  project aims to create a workflow for developing angular based frontend with 
 Behaviour Driven Development and API Driven Development.
-Angular parts are based on "John Papa's angular style guide".
+Angular code style is based on "John Papa's angular style guide".
 
-This workflow is divided in 3 phases: Setup, Development and Deploy
+Here are the workflow's steps.
+
+* Download the project from git
+```git clone https://github.com/sanjeyac/workflow-base```
+* Install all needed tools running 
+``` npm start ```
+* Add all your needed dependencies with bower command ( bootstrap, foundation5, leaflet, etc ) 
+```bower install leaflet --save```
+* Add all downloaded css/js files to your html files automatically with
+```gulp dev```
+* Run tests while developing
+```gulp test```
+* Run autmatically for each code change
+```gulp autotest```
+* Deploy app with concatenation and minification of all js and css files.
+
+Note:
+While developing your source files will be injected directly to html
+so if you have a error in your scripts, you'll get directly at the point,
+no absurd compilation/concatenation/minify/uglify problems while developing! ( too frustrating... )
 
 ## Setup
 
-* Install all needed libraries
+* Install all needed libraries with bower
 * Setup any templates and styles (bootstrap, foundation, etc.)
 
 ## Development
