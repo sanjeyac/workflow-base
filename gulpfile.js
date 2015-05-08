@@ -28,7 +28,6 @@ gulp.task('browser-sync', function () {
     });
 });
 
-
 gulp.task('bs-reload', function () {
     pluginsbrowserSync.reload();
 });
@@ -93,40 +92,18 @@ gulp.task('src-inject', function () {
         .pipe(gulp.dest('./src'));
 });
 
-// vendor script and styles
-gulp.task('src-vendor-scripts', function() {
-  return gulp.src(wiredep().js)
-    .pipe(concat('vendor.js'))
-    .pipe(rev())
-    .pipe(gulp.dest('src/js'));
+var wiredepStream = wiredep.stream;
+
+// inject bower dependencies in index.html
+gulp.task('wiredep', function () {
+  gulp.src('./src/index.html')
+    .pipe(wiredepStream({
+      optional: 'configuration',
+      goes: 'here'
+    }))
+    .pipe(gulp.dest('./src'));
 });
 
-gulp.task('src-vendor-css',  function() {
-  return gulp.src(wiredep().css)
-    .pipe(concat('vendor.css'))
-    .pipe(rev())
-    .pipe(gulp.dest('src/styles'));
-});
-
-gulp.task('src-vendor',['src-vendor-scripts','src-vendor-css']);
-
-
-// vendor script and styles
-gulp.task('deploy-vendor-scripts', function() {
-  return gulp.src(wiredep().js)
-    .pipe(concat('vendor.js'))
-    .pipe(rev())
-    .pipe(gulp.dest('dist/js'));
-});
-
-gulp.task('deploy-vendor-css',  function() {
-  return gulp.src(wiredep().css)
-    .pipe(concat('vendor.css'))
-    .pipe(rev())
-    .pipe(gulp.dest('dist/styles'));
-});
-
-gulp.task('deploy-vendor',['deploy-vendor-scripts','deploy-vendor-css']);
 
 /******************************************************************************
  *  Deploy  phase
@@ -204,10 +181,29 @@ gulp.task('deploy-inject', function () {
 });
 
 
+// vendor script and styles
+gulp.task('deploy-vendor-scripts', function() {
+  return gulp.src(wiredep().js)
+    .pipe(concat('vendor.js'))
+    .pipe(rev())
+    .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('deploy-vendor-css',  function() {
+  return gulp.src(wiredep().css)
+    .pipe(concat('vendor.css'))
+    .pipe(rev())
+    .pipe(gulp.dest('dist/styles'));
+});
+
+gulp.task('deploy-vendor',['deploy-vendor-scripts','deploy-vendor-css']);
+
+
 /**
  *  Deploy with all deploy phases
  */
-gulp.task('deploy', [ 'deploy-css', 'deploy-html', 'deploy-js', 'deploy-inject' ]);
+gulp.task('deploy', [ 'deploy-css', 'deploy-html', 'deploy-js', 
+                     'deploy-vendor-scripts', 'deploy-vendor-css', 'deploy-inject' ]);
 
 
 gulp.task('default', ['browser-sync'], function () {
