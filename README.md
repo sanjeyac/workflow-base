@@ -19,29 +19,21 @@ Here are the workflow's steps.
 * Deploy app with concatenation and minification of all js and css files.
 ```gulp deploy```
 
+## What can I do with this thing?
 
-Note:
-While developing your source files will be injected directly to html
-so if you have a error in your scripts, you'll get directly at the point,
-no absurd compilation/concatenation/minify/uglify problems while developing! ( too frustrating... )
-
-Note2:
-Test can be run continously with
-```gulp autotest```
-
-## Setup
+### Setup
 
 * Install all needed libraries with bower
 * Setup any templates and styles (bootstrap, foundation, etc.)
 
-## Development
+### Development
 
 * Create tests with karma and jasmine
 * Develop all the angular parts ( services, controllers, routing, etc )
 * Inject automatically new javascript and style files in html files
 * Check if all tests are passed
 
-## Deploy 
+### Deploy 
 
 * Concatenetate all js files in one file and all css files in one file
 * Minify all these files 

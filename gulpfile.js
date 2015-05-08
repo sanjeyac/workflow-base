@@ -5,16 +5,11 @@
 var gulp            = require('gulp'),
     plumber         = require('gulp-plumber'),
     rename          = require('gulp-rename'),
-    //autoprefixer    = require('gulp-autoprefixer'),
     concat          = require('gulp-concat'),
     uglify          = require('gulp-uglify'),
-    imagemin        = require('gulp-imagemin'),
-    cache           = require('gulp-cache'),
-    //sass            = require('gulp-sass'),
     bower           = require('gulp-bower'),
     inject          = require('gulp-inject'),
     rev             = require('gulp-rev'),
-    //jasmine         = require('gulp-jasmine'),
     karma           = require('gulp-karma'),
     wiredep         = require('wiredep'),
     series          = require('stream-series'),
@@ -99,7 +94,7 @@ gulp.task('dev', ['inject-src'],function(){
  *  Generate final Javascript files
  */
 gulp.task('deploy-js', function () {
-    return gulp.src('src/scripts/**/*.js')
+    return gulp.src(['src/scripts/**/*.js','!src/scripts/**/*.test.js'])
         .pipe(plumber({
             errorHandler: function (error) {
                 console.log(error.message);
@@ -109,13 +104,7 @@ gulp.task('deploy-js', function () {
         .pipe(concat('main.js'))
         .pipe(uglify())
         .pipe(rev())
-        .pipe(rename({
-            suffix: '.min'
-        }))
-        .pipe(gulp.dest('dist/scripts/'))
-        .pipe(browserSync.reload({
-            stream: true
-        }));    
+        .pipe(gulp.dest('dist/scripts/'));            
 });
 
 /**
@@ -130,10 +119,9 @@ gulp.task('deploy-css', function () {
             }
         }))
         .pipe(concat('style.css'))
-        .pipe(gulp.dest('dist/styles/'))
-        .pipe(browserSync.reload({
-            stream: true
-        })); 
+        .pipe(uglify())
+        .pipe(rev())
+        .pipe(gulp.dest('dist/styles/'));
 });
 
 /**
@@ -153,34 +141,32 @@ gulp.task('deploy-html', function () {
         })); 
 });
 
-/**
- *  Include js/css files in the html files
- */
-gulp.task('deploy-inject', function () {
-    var target = gulp.src('dist/*.html');
-    var sources = gulp.src(['dist/**/*.js', 
-                            'dist/**/*.css'], {
-        read: false
-    });
-    return target.pipe(inject(sources))
-        .pipe(gulp.dest('./dist'));
-});
-
-
 // vendor script and styles
 gulp.task('deploy-vendor-scripts', function() {
   return gulp.src(wiredep().js)
     .pipe(concat('vendor.js'))
     .pipe(rev())
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/lib'));
 });
 
 gulp.task('deploy-vendor-css',  function() {
   return gulp.src(wiredep().css)
     .pipe(concat('vendor.css'))
     .pipe(rev())
-    .pipe(gulp.dest('dist/styles'));
+    .pipe(gulp.dest('dist/lib'));
 });
+
+gulp.task('deploy-inject',['deploy-vendor-scripts', 'deploy-vendor-css' ], function () {
+    
+    var target = gulp.src('dist/*.html');
+    var sources = gulp.src(['dist/**/*.js', 
+                            'dist/**/*.css'], {
+        read: false
+    });
+    return target.pipe(inject(sources, { relative: true }))
+        .pipe(gulp.dest('./dist'));
+});
+
 
 gulp.task('deploy-vendor',['deploy-vendor-scripts','deploy-vendor-css']);
 
@@ -188,8 +174,7 @@ gulp.task('deploy-vendor',['deploy-vendor-scripts','deploy-vendor-css']);
 /**
  *  Deploy with all deploy phases
  */
-gulp.task('deploy', [ 'deploy-css', 'deploy-html', 'deploy-js', 
-                     'deploy-vendor-scripts', 'deploy-vendor-css', 'deploy-inject' ]);
+gulp.task('deploy', [ 'deploy-css', 'deploy-html', 'deploy-js', 'deploy-inject' ]);
 
 
 gulp.task('default', ['browser-sync'], function () {
