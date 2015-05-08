@@ -22,7 +22,7 @@ var gulp            = require('gulp'),
 
 gulp.task('bower-install', function () {
     return bower({
-            directory: './src/bower_components'
+            directory: './bower_components'
         });
         //.pipe(gulp.dest('dist/lib/'))
 });

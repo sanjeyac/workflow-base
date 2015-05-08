@@ -4,7 +4,8 @@
   "description": "A base project for AngularJS frontend with gulp automation and jasmine/karma testing tools",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "npm install"
+    "start": "npm install",
+    "postinstall": "gulp init"
   },
   "devDependencies": {
     "angular-mocks": "1.4.0-rc.1",
