@@ -1,5 +1,7 @@
 # workflow-base
 
+A set of preconfigured tools to improve frontend productivity.
+
 This  project aims to create a workflow for developing angular based frontend with 
 Behaviour Driven Development and API Driven Development.
 Angular code style is based on "John Papa's angular style guide".
